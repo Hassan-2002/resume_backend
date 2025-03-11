@@ -3,6 +3,8 @@ const cors = require("cors");
 const path = require("path");
 const resumeRoutes = require("./routes/resumeRoutes");
 const authRoutes = require("./routes/authRoutes");
+const atsRoutes = require("./routes/atsRoutes")
+const jobDescRoutes = require("./routes/jobDescRoutes")
 // Load environment variables
 require("dotenv").config();
 
@@ -24,8 +26,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Routes
 app.use("/auth", authRoutes);
 app.use("/resume", resumeRoutes);
-
-// Base route
+app.use("/atsScore", atsRoutes)
+app.use("/jobdesc", jobDescRoutes)
 app.get("/", (req, res) => {
   res.send("Resume Builder API is running");
 });
