@@ -20,6 +20,7 @@ ${jobDescription}
 
 ### Resume Content:
 \`\`\`
+
 ${resumeText}
 \`\`\`
 
