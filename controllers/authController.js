@@ -1,6 +1,12 @@
 const User = require("../models/Users");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const createToken = (userid) => {
+    return jwt.sign({ userid }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE
+    });
+}
 const createUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -62,9 +68,9 @@ const loginUser = async (req, res) => {
 
         // Find user and explicitly select password
         const user = await User.findOne({ email }).select("+password");
-    
+        
 
-        // 🔥 Debugging: Check if user exists
+       
         if (!user) {
             console.log("User not found:", email);
             return res.status(401).json({
@@ -80,19 +86,22 @@ const loginUser = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
        
         if (!isPasswordCorrect) {
-            console.log("Incorrect password:", password, "Stored:", user.password);
+            
             return res.status(401).json({
                 success: false,
                 message: "Incorrect password"
             });
         }
-
+        const token = createToken(user._id);
+         
+        res.header('Authentication',`Bearer ${token}`);
         res.status(200).json({
             success: true,
             message: "Login successful",
             data: {
                 name: user.name,
-                email: user.email
+                email: user.email,
+                token: token
             }
         });
 

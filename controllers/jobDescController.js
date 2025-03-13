@@ -5,11 +5,14 @@ const {parsePdf} = require('../utils/pdfParser');
 
 async function analyzeUploadedResume(req, res) {
     try {
-        const { jobDescription, jobTitle } = req.body;
+        const jobDescription = req.body.jobDescription;
+        const jobTitle = req.body.jobTitle; 
+        console.log(jobDescription,jobTitle)
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
-        if(!req.body.jobDescription || !req.body.jobTitle){
+        if(!jobDescription || !jobTitle){
+            
             return res.status(400).json({ success: false, message: 'No job description or job title uploaded' });
         } 
 

@@ -9,17 +9,54 @@ const analyzeResume = async (resumeText, jobDescription, jobTitle) => {
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         const prompt = `
-        "You are an ATS (Applicant Tracking System) analyzer. Your task is to evaluate a resume against a given job title and job description. Follow these steps:
+         
+Analyze the following resume against the given job title and description. Evaluate it based on ATS optimization, industry relevance, and hiring trends. Return the analysis in structured JSON format for front-end compatibility.
 
-        ATS Score (0-100): Calculate a numerical ATS score based on keyword relevance, formatting, and experience alignment.
-        Job Compatibility (%): Determine how well the resume matches the job description based on skills, experience, and qualifications.
-        Missing Skills & Gaps: Identify any missing or weak areas in the resume compared to the job description.
-        Improvement Suggestions: Provide actionable steps to enhance the resume for better ATS performance.
-    
+### Job Title & Description:
+\`\`\`
+${jobTitle}
+${jobDescription}
+\`\`\`
 
-        Job Title: ${jobTitle}
-        Job Description: ${jobDescription}
-        Resume Text: ${resumeText}`
+### Resume Content:
+\`\`\`
+${resumeText}
+\`\`\`
+
+### Response Format (Strictly Follow This)
+\`\`\`json
+{
+    "ats_score": (integer, 0-100, rating based on ATS keyword relevance, clarity, and formatting),
+    "summary": "(A one-sentence high-level assessment of the resume’s alignment with the job description)",
+    "strengths": [
+        {"title": "(Concise strength category)", "description": "(Short, specific reason why this is a strength)"}
+    ],
+    "weaknesses": [
+        {"title": "(Concise weakness category)", "description": "(Short, specific reason why this is a weakness)"}
+    ],
+    "improvements": [
+        {"title": "(Area for improvement)", "description": "(Specific, actionable step to fix this issue)"}
+    ],
+    "suggestions": [
+        {"title": "(Suggested addition/change)", "description": "(Explain why this change improves alignment with the job)"}
+    ],
+    "changes": [
+        {"title": "(Specific change required)", "before": "(Original content)", "after": "(Suggested improved content)"}
+    ],
+    "job_fit": [
+        {"role": "(Software role name)", "fit_score": (integer, 0-100), "reason": "(Short explanation of why the resume is or isn't a strong fit for this role)"}
+    ]
+}
+\`\`\`
+
+### Rules for Output:
+- **Strict JSON Compliance**: No extra text outside the JSON structure.
+- **Concise & Readable**: Keep descriptions **≤15 words** for easy display.
+- **Customization**: The job_fit section must analyze alignment with **at least 3 software engineering roles**, explaining the fit score.
+- **Actionable Changes**: The "changes" section must provide **before-and-after** improvements for clarity.
+`;
+
+
 
 
 

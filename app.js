@@ -3,31 +3,30 @@ const cors = require("cors");
 const path = require("path");
 const resumeRoutes = require("./routes/resumeRoutes");
 const authRoutes = require("./routes/authRoutes");
-const atsRoutes = require("./routes/atsRoutes")
-const jobDescRoutes = require("./routes/jobDescRoutes")
-// Load environment variables
-require("dotenv").config();
+const atsRoutes = require("./routes/atsRoutes");
+const jobDescRoutes = require("./routes/jobDescRoutes");
+const authenticateUser = require("./middlewares/authMiddleware"); // Import middleware
+require("dotenv").config(); // Load environment variables
 
-// Create Express app
 const app = express();
-
-
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from uploads directory
+// Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
-
-// Routes
+// Public Routes (No authentication needed)
 app.use("/auth", authRoutes);
-app.use("/resume", resumeRoutes);
-app.use("/atsScore", atsRoutes)
-app.use("/jobdesc", jobDescRoutes)
+
+// Protected Routes (Require JWT)
+app.use("/resume", authenticateUser, resumeRoutes);
+app.use("/atsscore", authenticateUser, atsRoutes);
+app.use("/jobdesc", authenticateUser, jobDescRoutes);
+
+// Root Route
 app.get("/", (req, res) => {
   res.send("Resume Builder API is running");
 });
