@@ -3,6 +3,9 @@ const fs = require('fs');
 const analyzeResume = require('../utils/aiAnalyzer');
 const {parsePdf} = require('../utils/pdfParser'); 
 
+
+
+
 async function analyzeUploadedResume(req, res) {
     try {
         if (!req.file) {
@@ -11,21 +14,23 @@ async function analyzeUploadedResume(req, res) {
 
         const filePath = path.join(__dirname, '../uploads', req.file.filename);
 
-        // 1. Parse PDF to text
+        
         const resumeText = await parsePdf(filePath);
 
       
-        const analysis = await analyzeResume(resumeText);
-        console.log(analysis);
-        // 4. Cleanup - Delete file after processing to save space
-        fs.unlinkSync(filePath);
+        const rawAnalysis = await analyzeResume(resumeText);
 
-        
-        // 5. Send response back to client
+       
+        fs.unlinkSync(filePath);
+        const cleaned = rawAnalysis.replace(/```json|```/g, '').trim();
+
+        const analysis = JSON.parse(cleaned);
+        console.log(analysis)
         res.json({
             success: true,
             message: 'Resume analyzed successfully',
-            analysis
+            analysis : analysis
+            
         });
 
     } catch (error) {

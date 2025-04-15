@@ -27,8 +27,7 @@ ${resumeText}
 ### Response Format (Strictly Follow This)
 \`\`\`json
 {
-    "ats_score": (integer, 0-100, rating based on ATS keyword relevance, clarity, and formatting),
-    "summary": "(A one-sentence high-level assessment of the resume’s alignment with the job description)",
+    "ats_score": (integer, 0-100, rating based on ATS keyword relevance, clarity, and formatting against the job description),
     "strengths": [
         {"title": "(Concise strength category)", "description": "(Short, specific reason why this is a strength)"}
     ],

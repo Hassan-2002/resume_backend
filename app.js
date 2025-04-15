@@ -23,7 +23,7 @@ app.use("/auth", authRoutes);
 
 // Protected Routes (Require JWT)
 app.use("/resume", authenticateUser, resumeRoutes);
-app.use("/atsscore", authenticateUser, atsRoutes);
+app.use("/ats-score", atsRoutes);
 app.use("/jobdesc", authenticateUser, jobDescRoutes);
 
 // Root Route
