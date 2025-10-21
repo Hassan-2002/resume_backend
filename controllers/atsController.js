@@ -3,15 +3,13 @@ const fs = require('fs');
 const analyzeResume = require('../utils/aiAnalyzer');
 const {parsePdf} = require('../utils/pdfParser'); 
 
-
-
-
 async function analyzeUploadedResume(req, res) {
+    
     try {
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
-
+   
         const filePath = path.join(__dirname, '../uploads', req.file.filename);
 
         

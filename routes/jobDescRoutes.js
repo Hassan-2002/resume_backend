@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const  { analyzeUploadedResume }  = require('../controllers/jobDescController');
+const { analyzeResumeJD } = require('../controllers/jobDescController');
 const upload = require('../middlewares/uploadMiddleware');
-router.post('/', upload.single('resume'), analyzeUploadedResume);
+const authMiddleware = require('../middlewares/authMiddleware')
+
+
+router.post('/', upload.single('resume'), analyzeResumeJD);
 
 module.exports = router;
