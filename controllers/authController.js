@@ -150,9 +150,45 @@ const authUserDetails = async (req, res) => {
     }
 };
 
+const logout = (req,res) => {
+    try{
+        const token = req.cookies[COOKIE_NAME]
+        if(!token){
+            res.clearCookie(COOKIE_NAME,
+                {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax', // use same as when setting
+                maxAge: 0
+                }
+
+            ).status(500).json({success : false , message : "No user recognised"});
+        }
+        const decoded = jwt.verify(token , process.env.JWT_SECRET)
+        if(!decoded){
+            res.status(500).json({success : false , message : "No user recognised"})
+        }
+        
+            res.clearCookie(COOKIE_NAME,
+                {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax', // use same as when setting
+                maxAge: 0
+                }
+
+            ).status(200).json({success : true , message : "Logged out sucessfully"})
+        
+       
+    }catch(error){
+        res.status(500).json({success : false, message : error.message})
+    }
+}
+
 
 module.exports = {
     createUser,
     loginUser,
-    authUserDetails
+    authUserDetails,
+    logout
 };

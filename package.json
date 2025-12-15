@@ -5,14 +5,15 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "bun --hot server.js",
+    "start": "bun server.js"
   },
   "keywords": [],
   "author": "Abdullah Ibrahim",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@google/generative-ai": "^0.24.0",
+    "@google/genai": "^1.32.0",
     "axios": "^1.8.1",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",

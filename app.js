@@ -15,7 +15,7 @@ const app = express();
 // Middleware
 const corsOptions = {
   // Your frontend's URL. Use an environment variable for production.
-  origin: 'http://localhost:5173', 
+  origin: ['http://localhost:3000', 'http://localhost:3001'], 
   credentials: true, // This is essential for cookies
 };
 app.use(cookieParser())
@@ -32,7 +32,7 @@ app.use("/auth", authRoutes);
 
 // Protected Routes (Require JWT)
 app.use("/resume", authenticateUser, resumeRoutes);
-app.use("/ats-score",authenticateUser, atsRoutes);
+app.use("/ats-score", atsRoutes);
 app.use("/job-desc", authenticateUser, jobDescRoutes);
 
 // Root Route
