@@ -7,6 +7,8 @@ const resumeRoutes = require("./routes/resumeRoutes");
 const authRoutes = require("./routes/authRoutes");
 const atsRoutes = require("./routes/atsRoutes");
 const jobDescRoutes = require("./routes/jobDescRoutes");
+const resumeBuilderRoutes = require("./routes/resumeBuilderRoutes");
+const generatePDFRoutes = require("./routes/generatePDF");
 const authenticateUser = require("./middlewares/authMiddleware"); // Import middleware
 require("dotenv").config(); // Load environment variables
 
@@ -34,6 +36,8 @@ app.use("/auth", authRoutes);
 app.use("/resume", authenticateUser, resumeRoutes);
 app.use("/ats-score", atsRoutes);
 app.use("/job-desc", authenticateUser, jobDescRoutes);
+app.use("/resume-builder", resumeBuilderRoutes);
+app.use("/generate-pdf", generatePDFRoutes);
 
 // Root Route
 app.get("/", (req, res) => {

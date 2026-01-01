@@ -9,11 +9,11 @@ const analyzeResume = async (resumeText) => {
   try {
     // 2. INITIALIZE client (Notice the new 'apiKey' parameter object)
     const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
-
+    
     // 3. CALL generateContent (No more 'getGenerativeModel')
     // You call 'models.generateContent' directly from the client instance
     const result = await genAI.models.generateContent({
-      model: "gemini-2.5-flash", //
+      model: "gemini-2.5-flash", 
       contents: [
         {
           role: "user",
@@ -21,13 +21,13 @@ const analyzeResume = async (resumeText) => {
         }
       ],
       config: {
-        responseMimeType: "application/json", // Optional: Enforces JSON output
+        responseMimeType: "application/json", 
       }
     });
 
     // 4. EXTRACT Response (Structure has changed)
     // The new SDK returns the text more directly
-    const rawText = result.text(); // or result.text depending on version, usually a method now
+    const rawText = result.text; // text is a property, not a method
 
     // 5. PARSE as before
     // We pass the raw string to your parser, not the full result object

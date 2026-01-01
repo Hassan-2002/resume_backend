@@ -1,6 +1,6 @@
 const userModel = require("../models/Users");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const COOKIE_NAME = 'session_token';
 
@@ -136,7 +136,10 @@ const authUserDetails = async (req, res) => {
             data: {
                 name: user.name,
                 email: user.email,
-                userId: user._id
+                userId: user._id,
+                plan: user.plan || 'free',
+                credits: user.credits ?? 3,
+                totalAnalyses: user.totalAnalyses || 0,
             }
         });
 

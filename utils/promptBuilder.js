@@ -1,6 +1,7 @@
+const todaysDate = new Date()
 const buildPrompt = (resumeText) => `
 You are an ATS evaluator. Analyze the resume content below and return ONLY valid JSON matching the schema exactly.
-
+For reference todays date is ${todaysDate}
 Required JSON shape:
 {
   "overallScore": integer 0-100,

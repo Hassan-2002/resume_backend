@@ -12,11 +12,12 @@ const authenticateUser = async (req, res, next) =>
 
     try {
         const decoded = jwt.verify( `${session_token}`, process.env.JWT_SECRET);
-        req.user = await User.findById(decoded.userid);
-        if (!req.user) {
+        const user = await User.findById(decoded.userid);
+        if (!user) {
             console.log(`User with ID ${decoded.userid} not found in DB.`);
             return res.status(401).json({ message: "User not found or invalid token." });
         }
+        req.user = { id: user._id, _id: user._id, email: user.email, name: user.name };
         next();
 
     } catch (error) {

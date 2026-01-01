@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-// const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -14,10 +13,37 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please enter your password"],
-    minlength : 6,
+    minlength: 6,
     select: false,
   },
+  // Plan and credits
+  plan: {
+    type: String,
+    enum: ["free", "pro", "enterprise"],
+    default: "free",
+  },
+  credits: {
+    type: Number,
+    default: 3, // Free plan gets 3 credits
+  },
+  // Track usage
+  totalAnalyses: {
+    type: Number,
+    default: 0,
+  },
+  lastAnalysisDate: {
+    type: Date,
+  },
+  // Subscription dates
+  planStartDate: {
+    type: Date,
+    default: Date.now,
+  },
+  planEndDate: {
+    type: Date,
+  },
+}, {
+  timestamps: true,
 });
 
 module.exports = mongoose.model("User", userSchema);
-
